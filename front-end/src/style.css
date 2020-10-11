@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    color: cadetblue;
+    text-decoration: unset;
+}
+
+ul {
+    margin-left: 1.5rem;
+    list-style: none;
+}
+
+button, input[type="submit"] {
+    border: none;
+    background: none;
+    color: unset;
+    cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6, p, ol, ul {
+    margin: 1em 0;
+}
+
+body {
+    font-family: "Oswald", sans-serif;
+}
+
+.page {
+    padding: 1rem;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+#header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: lightsalmon;
+}
+
+#header .title{
+    margin: 0;
+    color: white;
+    padding: 0 1rem;
+}
+
+#header .options{
+    height: 100%;
+    display: flex;
+}
+
+#header .options button{
+    padding: 0 1rem;
+    background-color: lightcoral;
+    color: whitesmoke;
+    font-size: 1.1rem;
+}
+
+#header .options button:hover{
+    background-color: sandybrown;
+}
+.form label, .form input{
+    display: block;
+}
+
+.form label {
+    margin-bottom: 0.5rem;
+}
+
+.form input {
+    margin-bottom: 1rem;
+}
+
+.form input[type="text"], .form input[type="email"], .form input[type="password"]{
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border: 1px solid #d1d1d1;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+}
+
+.form input:focus {
+    border: 1px solid #59b3fc;
+    box-shadow: inset 0px 0px 3px #7bbbf0;
+}
+
+.form input[type="submit"] {
+    border: 1px solid #6157ee;
+    border-radius: 4px;
+    background-color: #8780e9;
+    padding: 0.3rem 0.5rem;
+    font-size: 1.1rem;
+}
+
+.error-notice{
+    border: 1px solid #dd1515;
+    background-color: #dd5858;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.error-notice button{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #000000;
+    background-color: #dd1515;
+}
+
+@media screen and (max-width: 550px){
+    #head .title{
+        font-size: 1.2rem;
+    }
+    #header .options button{
+        padding: 0 0.5rem;
+        font-size: 1rem;
+    }
+}
+
+.center img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
