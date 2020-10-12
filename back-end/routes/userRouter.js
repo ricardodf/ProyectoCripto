@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const speakeasy = require('speakeasy');
 const qrcode = require('qrcode');
+const argon2 = require('argon2');
 
 const User = require('../models/userModel');
 const Logger = require('../models/loggerModel');
@@ -27,8 +27,7 @@ router.post('/register', async (req, res) => {
         if(!displayName) displayName = email;
 
         // Password encryption
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, salt);
+        const passwordHash = await argon2.hash(password);
         
         // Saved user
         const newUser = new User({
@@ -46,8 +45,10 @@ router.post('/register', async (req, res) => {
 
         if (!fs.existsSync(`${process.env.PATH_DB}/db/${savedUser._id}`)){
             fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}`);
-            fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}/uploads`);
+            fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}/encrypted`);
+            fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}/qrcodes`);
             fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}/signed`);
+            fs.mkdirSync(`${process.env.PATH_DB}/db/${savedUser._id}/uploads`);
         }
 
         res.json(savedUser);
@@ -68,7 +69,7 @@ router.post('/login', async (req, res) => {
         if(!user)
             return res.status(400).json({ msg: 'No account found'});
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await argon2.verify(user.password, password);
         if(!isMatch){
             const newLog = new Logger({
                 userID: user._id,
@@ -125,7 +126,6 @@ router.get('/', auth, async (req, res) => {
 
 router.post('/2fa-login', async (req, res) => {
     const { userToken } = req.body;
-    console.log(userToken);
 
     const secret = speakeasy.generateSecret({
         name: userToken
@@ -139,8 +139,6 @@ router.post('/2fa-login', async (req, res) => {
 
 router.post('/2fa-verify', async (req, res) => {
     const { secret, tokenCode } = req.body;
-    console.log(secret)
-    console.log(tokenCode)
 
     try {
         const verify = speakeasy.totp.verify({
